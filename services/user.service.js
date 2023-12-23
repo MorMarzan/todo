@@ -9,21 +9,27 @@ const gDemoUsers = [
         username: 'muki',
         password: 'pass',
         fullname: 'Muki Ja',
-        score: 10000
+        score: 10000,
+        color: '#FFFFFF',
+        bg: '#000000'
     },
     {
         _id: utilService.makeId(),
         username: 'mor',
         password: 'pass',
         fullname: 'Mor Mar',
-        score: 10000
+        score: 10000,
+        color: '#FFFFFF',
+        bg: '#000000'
     },
     {
         _id: utilService.makeId(),
         username: 'hadar',
         password: 'pass',
         fullname: 'Hadar Mar',
-        score: 10000
+        score: 10000,
+        color: '#FFFFFF',
+        bg: '#000000'
     }
 ]
 
@@ -35,7 +41,7 @@ export const userService = {
     getLoggedinUser,
     updateScore,
     getEmptyCredentials,
-    getEmptyUser
+    updateUserPreference
 }
 
 _createUsers()
@@ -74,6 +80,23 @@ function updateScore(diff) {
         })
 }
 
+function updateUserPreference(preference) {
+    const { fullname, color, bg } = preference
+    const loggedInUserId = getLoggedinUser()._id
+    return userService.getById(loggedInUserId)
+        .then(user => {
+            user.fullname = fullname
+            user.color = color
+            user.bg = bg
+            return storageService.put(STORAGE_KEY, user)
+        })
+        .then(user => {
+            _setLoggedinUser(user)
+            return ({ fullname: user.fullname, color: user.color, bg: user.bg })
+        })
+        .catch(console.log)
+}
+
 function logout() {
     sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN)
     return Promise.resolve()
@@ -83,17 +106,10 @@ function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
 }
 
-function getEmptyUser(fullname = '') {
-    return {
-        fullname,
-        color: '',
-        bg: ''
-    }
-}
-
+// window.getLoggedinUser = getLoggedinUser
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score }
+    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score, color: user.color, bg: user.bg }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }

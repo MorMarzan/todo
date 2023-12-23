@@ -1,13 +1,11 @@
-// import { UserMsg } from './UserMsg.jsx'
 import { LoginSignup } from './LoginSignup.jsx'
 import { userService } from '../services/user.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
-import { SET_CART_IS_SHOWN, SET_USER } from '../store/store.js'
+import { SET_USER } from '../store/store.js'
 import { ProgressBar } from './ProgressBar.jsx'
 
-const { useState } = React
 const { useSelector, useDispatch } = ReactRedux
-const { Link, NavLink } = ReactRouterDOM
+const { NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
 
 export function AppHeader() {
@@ -16,17 +14,17 @@ export function AppHeader() {
     const navigate = useNavigate()
 
     const user = useSelector(storeState => storeState.loggedinUser)
+    // const userPrefrence = useSelector(storeState => storeState.loggedinUser)
     const todosTotalCount = useSelector(storeState => storeState.todos.length)
     const todosDoneCount = useSelector(storeState =>
         storeState.todos.filter(todo =>
             todo.isDone).length)
 
-    // const isCartShown = useSelector(storeState => storeState.isCartShown)
-
     function onLogout() {
         userService.logout()
             .then(() => {
                 onSetUser(null)
+                // setUserColors()
             })
             .catch((err) => {
                 showErrorMsg('OOPS try again')
@@ -35,13 +33,23 @@ export function AppHeader() {
 
     function onSetUser(user) {
         dispatch({ type: SET_USER, user })
+        // setUserColors(user)
         navigate('/')
     }
 
-    // function onToggleCart(ev) {
-    //     ev.preventDefault()
-    //     dispatch({ type: SET_CART_IS_SHOWN, isCartShown: !isCartShown })
-    // }
+    function setUserColors(user) {
+        const root = document.documentElement
+        // Set or update the CSS variables based on the user's color and bg props
+        if (user && user.color && user.bg) {
+            root.style.setProperty('--clr1bg', user.color)
+            root.style.setProperty('--clr1', user.bg)
+        } else {
+            // If user is not logged in or doesn't have color/bg, reset the variables to default
+            root.style.setProperty('--clr1bg', '')
+            root.style.setProperty('--clr1', '')
+        }
+    }
+
 
     return (
         <header className="app-header">
@@ -52,13 +60,11 @@ export function AppHeader() {
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/todo" >Todos</NavLink>
                     {user && <NavLink to="/profile" >Profile</NavLink>}
-                    {/* <a onClick={onToggleCart} href="#">🛒 Cart</a> */}
                 </nav>
             </section>
             {user ? (
                 <section>
                     <span to={`/user/${user._id}`}>Hello {user.fullname}</span>
-                    {/* <span to={`/user/${user._id}`}>Hello {user.fullname} <span>${user.score.toLocaleString()}</span></span> */}
                     <button onClick={onLogout}>Logout</button>
                 </section>
             ) : (
@@ -66,7 +72,6 @@ export function AppHeader() {
                     <LoginSignup onSetUser={onSetUser} />
                 </section>
             )}
-            {/* <UserMsg /> */}
             {todosTotalCount > 0 &&
                 <ProgressBar doneCount={todosDoneCount} totalCount={todosTotalCount} />}
         </header>

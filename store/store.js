@@ -15,7 +15,7 @@ export const CLEAR_CART = 'CLEAR_CART'
 
 /// user
 export const SET_USER = 'SET_USER'
-export const UPDATE_USER = 'UPDATE_USER'
+export const UPDATE_USER_PREFERENCE = 'UPDATE_USER_PREFERENCE'
 export const SET_USER_SCORE = 'SET_USER_SCORE'
 
 const initialState = {
@@ -73,8 +73,8 @@ function appReducer(state = initialState, action = {}) {
         // case SET_USER_SCORE:
         //     user = {...state.loggedinUser, score: action.score}
         //     return { ...state, loggedinUser: user }
-        case UPDATE_USER:
-            user = {...state.loggedinUser, user: action.user}
+        case UPDATE_USER_PREFERENCE:
+            user = { ...state.loggedinUser, ...action.preference }
             return { ...state, loggedinUser: user }
 
         default:

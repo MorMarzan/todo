@@ -1,19 +1,17 @@
 import { userService } from "../services/user.service.js"
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { ADD_TODO, UPDATE_TODO } from '../store/store.js'
+import { UPDATE_USER_PREFERENCE } from '../store/store.js'
 
 
-const { useNavigate, useParams, Link } = ReactRouterDOM
-const { useSelector, useDispatch } = ReactRedux
-const { useState, useEffect } = React
+const { Link } = ReactRouterDOM
+const { useDispatch } = ReactRedux
+const { useState } = React
 
 
-export function UserEdit() {
+export function UserEdit({ user }) {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [userToEdit, setUserToEdit] = useState(userService.getEmptyUser())
-
+    const [userToEdit, setUserToEdit] = useState(user)
 
     function handleChange({ target }) {
         const field = target.name
@@ -38,11 +36,10 @@ export function UserEdit() {
 
     function onSaveUser(ev) {
         ev.preventDefault()
-        userService.save(userToEdit)
-            .then((savedUser) => {
-                dispatch({ type: UPDATE_USER, user: savedUser })
+        userService.updateUserPreference(userToEdit)
+            .then((savedPreference) => {
+                dispatch({ type: UPDATE_USER_PREFERENCE, preference: savedPreference })
                 showSuccessMsg(`Profile updated successfully`)
-                // navigate('/todo')
             })
             .catch(err => {
                 console.log('Cannot update profile', err)
@@ -50,7 +47,7 @@ export function UserEdit() {
             })
     }
 
-    const { fullname, color, bg } = userToEdit
+    const { fullname, color = '#000000', bg = '#FFFFFF' } = userToEdit
 
     return (
         <section className="user-edit">
@@ -63,7 +60,7 @@ export function UserEdit() {
                 <input onChange={handleChange} value={color} type="color" name="color" id="color" />
 
                 <label htmlFor="bg">BG Color</label>
-                <input onChange={handleChange} value={bg} type="bg" name="bg" id="bg" />
+                <input onChange={handleChange} value={bg} type="color" name="bg" id="bg" />
 
                 <button>Save</button>
             </form>

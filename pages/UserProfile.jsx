@@ -21,7 +21,7 @@ export function UserProfile() {
     return (
         <section className="user-profile">
             <h1>Hello {user.fullname}</h1>
-            <UserEdit />
+            <UserEdit user={user}/>
 
             
         </section>
