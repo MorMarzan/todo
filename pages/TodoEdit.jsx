@@ -53,7 +53,8 @@ export function TodoEdit() {
 
         todoService.save(todoToEdit)
             .then((savedTodo) => {
-                dispatch({ type: UPDATE_TODO, todo: savedTodo })
+                if (todoId) dispatch({ type: UPDATE_TODO, todo: savedTodo })
+                else dispatch({ type: ADD_TODO, todo: savedTodo })
                 showSuccessMsg(`Todo updated successfully`)
                 navigate('/todo')
             })
@@ -67,7 +68,7 @@ export function TodoEdit() {
 
     return (
         <section className="todo-edit">
-            <h1>Add Todo</h1>
+            <h1>{todoId ? 'Edit' : 'Add'} Todo</h1>
             <form onSubmit={onSaveTodo}>
                 <label htmlFor="txt">Text</label>
                 <input onChange={handleChange} value={txt} type="text" name="txt" id="txt" />

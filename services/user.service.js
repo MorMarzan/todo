@@ -1,7 +1,31 @@
 import { storageService } from './async-storage.service.js'
+import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'userDB'
 const STORAGE_KEY_LOGGEDIN = 'loggedinUser'
+const gDemoUsers = [
+    {
+        _id: utilService.makeId(),
+        username: 'muki',
+        password: 'pass',
+        fullname: 'Muki Ja',
+        score: 10000
+    },
+    {
+        _id: utilService.makeId(),
+        username: 'mor',
+        password: 'pass',
+        fullname: 'Mor Mar',
+        score: 10000
+    },
+    {
+        _id: utilService.makeId(),
+        username: 'hadar',
+        password: 'pass',
+        fullname: 'Hadar Mar',
+        score: 10000
+    }
+]
 
 export const userService = {
     login,
@@ -12,6 +36,8 @@ export const userService = {
     updateScore,
     getEmptyCredentials
 }
+
+_createUsers()
 
 
 function getById(userId) {
@@ -70,6 +96,12 @@ function getEmptyCredentials() {
     }
 }
 
+function _createUsers() {
+    let users = utilService.loadFromStorage(STORAGE_KEY)
+    if (!users || !users.length) {
+        utilService.saveToStorage(STORAGE_KEY, gDemoUsers)
+    }
+}
 
 // Test Data
 // userService.signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})

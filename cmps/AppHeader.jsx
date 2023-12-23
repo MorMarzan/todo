@@ -21,8 +21,6 @@ export function AppHeader() {
         storeState.todos.filter(todo =>
             todo.isDone).length)
 
-
-    console.log('todos done', todosDoneCount / todosTotalCount * 100)
     // const isCartShown = useSelector(storeState => storeState.isCartShown)
 
     function onLogout() {
@@ -48,7 +46,7 @@ export function AppHeader() {
     return (
         <header className="app-header">
             <section className="header-container">
-                <h1>Header</h1>
+                <h1>Todo App</h1>
                 <nav className="app-nav">
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>

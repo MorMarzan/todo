@@ -1,4 +1,4 @@
-const { useState, useEffect } = React
+const { useState, useEffect, Fragment } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link } = ReactRouterDOM
 
@@ -12,13 +12,14 @@ export function TodoIndex() {
     const dispatch = useDispatch()
 
     const todos = useSelector(storeState => storeState.todos)
+    const user = useSelector(storeState => storeState.loggedinUser)
     const [filterBy, setFilterBy] = useState(todoService.getDefaultFilter())
     // const cart = useSelector(storeState => storeState.shoppingCart)
 
 
     useEffect(() => {
         loadTodos()
-    }, [filterBy])
+    }, [filterBy, user])
 
     function loadTodos() {
         todoService.query(filterBy)
@@ -46,6 +47,10 @@ export function TodoIndex() {
             ...filterBy,
             // pageIdx: isUndefined(prevFilter.pageIdx) ? undefined : 0
         }))
+    }
+
+    function promptSignup() {
+        showErrorMsg('Signup to enjoy our todos app')
     }
 
     // function onToggleIsDone(todoId) {
@@ -95,12 +100,20 @@ export function TodoIndex() {
 
     return (
         <main>
-            <h1>Todos App</h1>
-            <button><Link to={`/todo/edit/`}>Add todo</Link></button>
-            <section className="todo-index">
-                <TodoFilter filterBy={{ txt, isDone }} onSetFilter={onSetFilter} />
-                <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
-            </section>
+            {user ?
+                <Fragment>
+                    <button><Link to={`/todo/edit/`}>Add todo</Link></button>
+                    <section className="todo-index">
+                        <TodoFilter filterBy={{ txt, isDone }} onSetFilter={onSetFilter} />
+                        <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
+                    </section>
+                </Fragment>
+                :
+                <Fragment>
+                <button onClick={promptSignup}>Add todo</button>
+                <h1>Start creating you're todos now!</h1>
+                </Fragment>
+                }
             {/* <button onClick={onAddTodo}>Add Todo ⛐</button> */}
             {/* <ul className="todo-list">
                     {todos.map(todo =>

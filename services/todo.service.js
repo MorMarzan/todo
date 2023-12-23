@@ -21,6 +21,12 @@ function query(filterBy) {
     // return storageService.query(STORAGE_KEY)
     return storageService.query(STORAGE_KEY)
         .then(todos => {
+            if (filterBy.owner === null) {
+                return []
+            }
+            else if (filterBy.owner) {
+                todos = todos.filter(todo => todo.owner._id === filterBy.owner._id)
+            }
             if (filterBy.txt) {
                 const regExp = new RegExp(filterBy.txt, 'i')
                 todos = todos.filter(todo => regExp.test(todo.txt))
@@ -59,7 +65,7 @@ function getEmptyTodo(txt = '') {
 }
 
 function getDefaultFilter() {
-    return { txt: '', isDone: undefined }
+    return { owner: userService.getLoggedinUser(), txt: '', isDone: undefined }
 }
 
 function _createTodos() {
@@ -70,6 +76,7 @@ function _createTodos() {
 }
 
 function _createDemoTodos() {
+    let demoUsers = utilService.loadFromStorage('userDB')
     const todoTexts = [
         'Finish homework',
         'Buy groceries',
@@ -82,6 +89,8 @@ function _createDemoTodos() {
     const todos = todoTexts.map(todoTxt => {
         const todo = _createTodo(todoTxt)
         todo.isDone = Math.random() < 0.5 ? false : true
+        const { _id, fullname, score } = demoUsers[1]
+        todo.owner = { _id, fullname, score }
         return todo
     })
     utilService.saveToStorage(STORAGE_KEY, todos)

@@ -8,6 +8,10 @@ export function TodoList({ todos, onRemoveTodo }) {
         title:'todo'
     }
 
+    
+    if (!todos) return <div>Loading...</div>
+    if (!todos.length) return <h1>Start creating you're todos now!</h1>
+
     return (
         <ul {...ulProps} >
             {todos.map(todo =>
