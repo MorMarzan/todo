@@ -6,20 +6,24 @@ import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { ADD_TODO, ADD_TODO_TO_CART, REMOVE_TODO, SET_TODOS, UPDATE_TODO } from '../store/store.js'
+import { TodoFilter } from '../cmps/TodoFilter.jsx'
 
 export function TodoIndex() {
     const dispatch = useDispatch()
 
     const todos = useSelector(storeState => storeState.todos)
+    const [filterBy, setFilterBy] = useState(todoService.getDefaultFilter())
     // const cart = useSelector(storeState => storeState.shoppingCart)
 
 
     useEffect(() => {
-        todoService.query()
+        todoService.query(filterBy)
             .then(todos => {
                 dispatch({ type: SET_TODOS, todos })
             })
-    }, [])
+    }, [filterBy])
+
+    console.log('filterBy',filterBy)
 
     function onRemoveTodo(todoId) {
         todoService.remove(todoId)
@@ -33,19 +37,12 @@ export function TodoIndex() {
             })
     }
 
-    function onAddTodo() {
-        const txt = prompt("Todo text:")
-        const todoToSave = todoService.getEmptyTodo(txt)
-
-        todoService.save(todoToSave)
-            .then((savedTodo) => {
-                showSuccessMsg(`Todo added (id: ${savedTodo._id})`)
-                dispatch({ type: ADD_TODO, todo: savedTodo })
-            })
-            .catch(err => {
-                console.log('Cannot add todo', err)
-                showErrorMsg('Cannot add todo')
-            })
+    function onSetFilter(filterBy) {
+        setFilterBy(prevFilter => ({
+            ...prevFilter,
+            ...filterBy,
+            // pageIdx: isUndefined(prevFilter.pageIdx) ? undefined : 0
+        }))
     }
 
     // function onToggleIsDone(todoId) {
@@ -91,13 +88,14 @@ export function TodoIndex() {
     //     showSuccessMsg('Added to Cart')
     // }
 
+    const { txt, isDone } = filterBy
+
     return (
         <main>
             <h1>Todos App</h1>
-            {/* <button onClick={onAddTodo}>Add Todo</button> */}
             <button><Link to={`/todo/edit/`}>Add todo</Link></button>
             <section className="todo-index">
-                {/* <TodoFilter filterBy={{ txt, minSpeed }} onSetFilter={onSetFilter} /> */}
+                <TodoFilter filterBy={{ txt, isDone }} onSetFilter={onSetFilter} />
                 <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
             </section>
             {/* <button onClick={onAddTodo}>Add Todo ⛐</button> */}

@@ -10,10 +10,10 @@ const { useState, useEffect } = React
 
 export function TodoEdit() {
 
-    const [todoToEdit, setTodoToEdit] = useState(todoService.getEmptyTodo())
     const navigate = useNavigate()
-    const { todoId } = useParams()
     const dispatch = useDispatch()
+    const { todoId } = useParams()
+    const [todoToEdit, setTodoToEdit] = useState(todoService.getEmptyTodo())
 
     useEffect(() => {
         if (todoId) {

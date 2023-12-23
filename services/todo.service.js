@@ -10,22 +10,32 @@ export const todoService = {
     getById,
     save,
     remove,
-    getEmptyTodo
+    getEmptyTodo,
+    getDefaultFilter
 }
 
 _createTodos()
 
-function query() {
+function query(filterBy) {
     // return axios.get(BASE_URL).then(res => res.data)
+    // return storageService.query(STORAGE_KEY)
     return storageService.query(STORAGE_KEY)
+        .then(todos => {
+            if (filterBy.txt) {
+                const regExp = new RegExp(filterBy.txt, 'i')
+                todos = todos.filter(todo => regExp.test(todo.txt))
+            }
+            if (filterBy.isDone !== undefined) {
+                console.log('filterBy.isDone',filterBy.isDone)
+                todos = todos.filter(todo => todo.isDone === filterBy.isDone)
+            }
+            return todos
+        })
 }
 
 function getById(todoId) {
     return storageService.get(STORAGE_KEY, todoId)
 }
-
-window.getById = getById
-
 
 function remove(todoId) {
     // return Promise.reject('Not now!')
@@ -47,6 +57,10 @@ function getEmptyTodo(txt = '') {
         txt,
         isDone: false,
     }
+}
+
+function getDefaultFilter() {
+    return { txt: '', isDone: undefined }
 }
 
 function _createTodos() {
