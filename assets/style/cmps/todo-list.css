@@ -1,15 +1,20 @@
 .todo-list {
     list-style: none;
+    padding: 0;
     display: grid;
+    gap: 0.5em;
 }
 
 .todo-list li {
     display: grid;
     grid-template-columns: 3fr 1fr;
     background-color: var(--clr1bg);
-    margin: 0.5em;
+    padding: 0.5em;
 }
 
 .todo-list li .tools{
     justify-self: end;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.5em
 }
