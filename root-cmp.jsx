@@ -13,6 +13,7 @@ import { store } from './store/store.js'
 import { TodoEdit } from './pages/TodoEdit.jsx'
 import { UserMsg } from './cmps/UserMsg.jsx'
 import { TodoDetails } from './pages/TodoDetails.jsx'
+import { UserProfile } from './pages/UserProfile.jsx'
 
 
 export class App extends React.Component {
@@ -31,6 +32,7 @@ export class App extends React.Component {
                                 <Route path="/todo/:todoId" element={<TodoDetails />} />
                                 <Route path="/todo/edit" element={<TodoEdit />} />
                                 <Route path="/todo/edit/:todoId" element={<TodoEdit />} />
+                                <Route path="/profile" element={<UserProfile />} />
                             </Routes>
                         </main>
                         {/* <AppFooter /> */}

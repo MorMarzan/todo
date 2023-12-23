@@ -34,7 +34,8 @@ export const userService = {
     getById,
     getLoggedinUser,
     updateScore,
-    getEmptyCredentials
+    getEmptyCredentials,
+    getEmptyUser
 }
 
 _createUsers()
@@ -81,6 +82,15 @@ function logout() {
 function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
 }
+
+function getEmptyUser(fullname = '') {
+    return {
+        fullname,
+        color: '',
+        bg: ''
+    }
+}
+
 
 function _setLoggedinUser(user) {
     const userToSave = { _id: user._id, fullname: user.fullname, score: user.score }

@@ -15,6 +15,7 @@ export const CLEAR_CART = 'CLEAR_CART'
 
 /// user
 export const SET_USER = 'SET_USER'
+export const UPDATE_USER = 'UPDATE_USER'
 export const SET_USER_SCORE = 'SET_USER_SCORE'
 
 const initialState = {
@@ -28,7 +29,8 @@ const initialState = {
 function appReducer(state = initialState, action = {}) {
 
     let todos
-    let shoppingCart
+    let user
+    // let shoppingCart
     switch (action.type) {
         // todo
         case SET_TODOS:
@@ -68,8 +70,11 @@ function appReducer(state = initialState, action = {}) {
         // user
         case SET_USER:
             return { ...state, loggedinUser: action.user }
-        case SET_USER_SCORE:
-            const user = {...state.loggedinUser, score: action.score}
+        // case SET_USER_SCORE:
+        //     user = {...state.loggedinUser, score: action.score}
+        //     return { ...state, loggedinUser: user }
+        case UPDATE_USER:
+            user = {...state.loggedinUser, user: action.user}
             return { ...state, loggedinUser: user }
 
         default:

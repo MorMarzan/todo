@@ -19,7 +19,7 @@ export function TodoIndex() {
 
     useEffect(() => {
         loadTodos()
-    }, [filterBy, user])
+    }, [filterBy])
 
     function loadTodos() {
         todoService.query(filterBy)
