@@ -17,6 +17,6 @@
 @import 'cmps/todo-list.css';
 @import 'cmps/todo-preview.css';
 @import 'cmps/todo-index.css';
-
-@import 'cmps/shopping-cart.css';
+@import 'cmps/user-edit.css';
+@import 'cmps/todo-edit.css';
 

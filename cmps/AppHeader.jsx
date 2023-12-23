@@ -7,6 +7,8 @@ import { ProgressBar } from './ProgressBar.jsx'
 const { useSelector, useDispatch } = ReactRedux
 const { NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
+const { Fragment } = React
+
 
 export function AppHeader() {
 
@@ -14,7 +16,7 @@ export function AppHeader() {
     const navigate = useNavigate()
 
     const user = useSelector(storeState => storeState.loggedinUser)
-    const userPrefrence = useSelector(storeState => storeState.loggedinUser.prefs)
+    // const userPrefrence = useSelector(storeState => storeState.loggedinUser.prefs)
     const todosTotalCount = useSelector(storeState => storeState.todos.length)
     const todosDoneCount = useSelector(storeState =>
         storeState.todos.filter(todo =>
@@ -62,16 +64,16 @@ export function AppHeader() {
                     {user && <NavLink to="/profile" >Profile</NavLink>}
                 </nav>
             </section>
-            {user ? (
-                <section>
-                    <span to={`/user/${user._id}`}>Hello {user.fullname}</span>
-                    <button onClick={onLogout}>Logout</button>
-                </section>
-            ) : (
-                <section>
+            <section className='login'>
+                {user ? (
+                    <Fragment>
+                        <span to={`/user/${user._id}`}>Hello {user.fullname}</span>
+                        <button onClick={onLogout}>Logout</button>
+                    </Fragment>
+                ) : (
                     <LoginSignup onSetUser={onSetUser} />
-                </section>
-            )}
+                )}
+            </section>
             {todosTotalCount > 0 &&
                 <ProgressBar doneCount={todosDoneCount} totalCount={todosTotalCount} />}
         </header>

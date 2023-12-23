@@ -1,4 +1,9 @@
 .todo-index {
     max-width: fit-content;
     margin: auto;
+    display: grid;
+}
+
+.todo-index .edit.btn {
+    margin: 1em 0;
 }
