@@ -12,6 +12,7 @@ import { TodoIndex } from './pages/TodoIndex.jsx'
 import { store } from './store/store.js'
 import { TodoEdit } from './pages/TodoEdit.jsx'
 import { UserMsg } from './cmps/UserMsg.jsx'
+import { TodoDetails } from './pages/TodoDetails.jsx'
 
 
 export class App extends React.Component {
@@ -24,9 +25,10 @@ export class App extends React.Component {
                         {/* <AppHeader /> */}
                         <main>
                             <Routes>
-                                <Route element={<HomePage />} path="/" />
-                                <Route element={<AboutUs />} path="/about" />
-                                <Route element={<TodoIndex />} path="/todo" />
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="/about" element={<AboutUs />} />
+                                <Route path="/todo" element={<TodoIndex />} />
+                                <Route path="/todo/:todoId" element={<TodoDetails />} />
                                 <Route path="/todo/edit" element={<TodoEdit />} />
                                 <Route path="/todo/edit/:todoId" element={<TodoEdit />} />
                             </Routes>
@@ -35,7 +37,7 @@ export class App extends React.Component {
                         <UserMsg />
                     </section>
                 </Router>
-             </Provider>
+            </Provider>
         )
     }
 }

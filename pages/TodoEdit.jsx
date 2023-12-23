@@ -3,7 +3,7 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { ADD_TODO, UPDATE_TODO } from '../store/store.js'
 
 
-const { useNavigate, useParams } = ReactRouterDOM
+const { useNavigate, useParams, Link } = ReactRouterDOM
 const { useSelector, useDispatch } = ReactRedux
 const { useState, useEffect } = React
 
@@ -77,6 +77,7 @@ export function TodoEdit() {
 
                 <button disabled={!txt}>Save</button>
             </form>
+            <button><Link className="btn" to={'/todo'}>← Go back</Link></button>
 
         </section>
     )
