@@ -21,7 +21,6 @@ function createEventEmitter() {
 export const eventBusService = createEventEmitter()
 
 export function showUserMsg(msg) {
-    console.log('hiiii')
     eventBusService.emit('show-user-msg', msg)
 }
 export function showSuccessMsg(txt) {

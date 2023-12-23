@@ -13,7 +13,7 @@ export function TodoList({ todos, onRemoveTodo }) {
             {todos.map(todo =>
                 <li key={todo._id}>
                     <TodoPreview todo={todo} />
-                    <section>
+                    <section className="tools">
                         <button onClick={() => onRemoveTodo(todo._id)}>X</button>
                         {/* <button><Link to={`/todo/${todo._id}`}>Details</Link></button> */}
                         <button><Link to={`/todo/edit/${todo._id}`}>Edit</Link></button>

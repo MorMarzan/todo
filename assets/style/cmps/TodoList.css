@@ -1,13 +1,15 @@
 .todo-list {
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
 }
 
 .todo-list li {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
     background-color: var(--clr1bg);
     margin: 0.5em;
+}
+
+.todo-list li .tools{
+    justify-self: end;
 }

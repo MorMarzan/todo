@@ -11,6 +11,7 @@ import { AboutUs } from './pages/AboutUs.jsx'
 import { TodoIndex } from './pages/TodoIndex.jsx'
 import { store } from './store/store.js'
 import { TodoEdit } from './pages/TodoEdit.jsx'
+import { UserMsg } from './cmps/UserMsg.jsx'
 
 
 export class App extends React.Component {
@@ -31,6 +32,7 @@ export class App extends React.Component {
                             </Routes>
                         </main>
                         {/* <AppFooter /> */}
+                        <UserMsg />
                     </section>
                 </Router>
              </Provider>
