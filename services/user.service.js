@@ -10,8 +10,10 @@ const gDemoUsers = [
         password: 'pass',
         fullname: 'Muki Ja',
         score: 10000,
-        color: '#FFFFFF',
-        bg: '#000000'
+        prefs: {
+            color: '#FFFFFF',
+            bg: '#000000'
+        }
     },
     {
         _id: utilService.makeId(),
@@ -19,8 +21,10 @@ const gDemoUsers = [
         password: 'pass',
         fullname: 'Mor Mar',
         score: 10000,
-        color: '#FFFFFF',
-        bg: '#000000'
+        prefs: {
+            color: '#FFFFFF',
+            bg: '#000000'
+        }
     },
     {
         _id: utilService.makeId(),
@@ -28,8 +32,10 @@ const gDemoUsers = [
         password: 'pass',
         fullname: 'Hadar Mar',
         score: 10000,
-        color: '#FFFFFF',
-        bg: '#000000'
+        prefs: {
+            color: '#FFFFFF',
+            bg: '#000000'
+        }
     }
 ]
 
@@ -81,13 +87,13 @@ function updateScore(diff) {
 }
 
 function updateUserPreference(preference) {
-    const { fullname, color, bg } = preference
+    const { fullname, prefs } = preference
     const loggedInUserId = getLoggedinUser()._id
     return userService.getById(loggedInUserId)
         .then(user => {
             user.fullname = fullname
-            user.color = color
-            user.bg = bg
+            user.prefs.color = prefs.color
+            user.prefs.bg = prefs.bg
             return storageService.put(STORAGE_KEY, user)
         })
         .then(user => {
@@ -109,7 +115,7 @@ function getLoggedinUser() {
 // window.getLoggedinUser = getLoggedinUser
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score, color: user.color, bg: user.bg }
+    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score, prefs: {color: user.prefs.color, bg: user.prefs.bg} }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }

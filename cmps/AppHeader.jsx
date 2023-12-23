@@ -14,7 +14,7 @@ export function AppHeader() {
     const navigate = useNavigate()
 
     const user = useSelector(storeState => storeState.loggedinUser)
-    // const userPrefrence = useSelector(storeState => storeState.loggedinUser)
+    const userPrefrence = useSelector(storeState => storeState.loggedinUser.prefs)
     const todosTotalCount = useSelector(storeState => storeState.todos.length)
     const todosDoneCount = useSelector(storeState =>
         storeState.todos.filter(todo =>
@@ -37,18 +37,18 @@ export function AppHeader() {
         navigate('/')
     }
 
-    function setUserColors(user) {
-        const root = document.documentElement
-        // Set or update the CSS variables based on the user's color and bg props
-        if (user && user.color && user.bg) {
-            root.style.setProperty('--clr1bg', user.color)
-            root.style.setProperty('--clr1', user.bg)
-        } else {
-            // If user is not logged in or doesn't have color/bg, reset the variables to default
-            root.style.setProperty('--clr1bg', '')
-            root.style.setProperty('--clr1', '')
-        }
-    }
+    // function setUserColors(user) {
+    //     const root = document.documentElement
+    //     // Set or update the CSS variables based on the user's color and bg props
+    //     if (user && user.color && user.bg) {
+    //         root.style.setProperty('--clr1bg', user.color)
+    //         root.style.setProperty('--clr1', user.bg)
+    //     } else {
+    //         // If user is not logged in or doesn't have color/bg, reset the variables to default
+    //         root.style.setProperty('--clr1bg', '')
+    //         root.style.setProperty('--clr1', '')
+    //     }
+    // }
 
 
     return (

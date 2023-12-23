@@ -34,10 +34,25 @@ export function UserEdit({ user }) {
         setUserToEdit(prevUser => ({ ...prevUser, [field]: value }))
     }
 
+    function handleColorChange({ target }) {
+        const field = target.name
+        let value = target.value
+
+        setUserToEdit(prevUser =>
+        ({
+            ...prevUser,
+            prefs: {
+                ...prevUser.prefs,
+                [field]: value
+            }
+        }))
+    }
+
     function onSaveUser(ev) {
         ev.preventDefault()
         userService.updateUserPreference(userToEdit)
             .then((savedPreference) => {
+                console.log('savedPreference',savedPreference)
                 dispatch({ type: UPDATE_USER_PREFERENCE, preference: savedPreference })
                 showSuccessMsg(`Profile updated successfully`)
             })
@@ -47,7 +62,7 @@ export function UserEdit({ user }) {
             })
     }
 
-    const { fullname, color = '#000000', bg = '#FFFFFF' } = userToEdit
+    const { fullname, prefs } = userToEdit
 
     return (
         <section className="user-edit">
@@ -57,10 +72,10 @@ export function UserEdit({ user }) {
                 <input onChange={handleChange} value={fullname} type="text" name="fullname" id="fullname" />
 
                 <label htmlFor="color">Color</label>
-                <input onChange={handleChange} value={color} type="color" name="color" id="color" />
+                <input onChange={handleColorChange} value={prefs.color} type="color" name="color" id="color" />
 
                 <label htmlFor="bg">BG Color</label>
-                <input onChange={handleChange} value={bg} type="color" name="bg" id="bg" />
+                <input onChange={handleColorChange} value={prefs.bg} type="color" name="bg" id="bg" />
 
                 <button>Save</button>
             </form>
