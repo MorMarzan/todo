@@ -26,7 +26,6 @@ function query(filterBy) {
                 todos = todos.filter(todo => regExp.test(todo.txt))
             }
             if (filterBy.isDone !== undefined) {
-                console.log('filterBy.isDone',filterBy.isDone)
                 todos = todos.filter(todo => todo.isDone === filterBy.isDone)
             }
             return todos

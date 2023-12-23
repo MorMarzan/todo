@@ -19,7 +19,8 @@ export const SET_USER_SCORE = 'SET_USER_SCORE'
 
 const initialState = {
     todos: [],
-    // loggedinUser: userService.getLoggedinUser(),
+    isLoading: false,
+    loggedinUser: userService.getLoggedinUser(),
     // isCartShown: false,
     // shoppingCart: []
 }
@@ -65,12 +66,12 @@ function appReducer(state = initialState, action = {}) {
         //     return { ...state, shoppingCart: [] }
 
         // user
-        // case SET_USER:
-        //     return { ...state, loggedinUser: action.user }
-        // case SET_USER_SCORE:
-        //     const user = {...state.loggedinUser, score: action.score}
-        //     return { ...state, loggedinUser: user }
-        
+        case SET_USER:
+            return { ...state, loggedinUser: action.user }
+        case SET_USER_SCORE:
+            const user = {...state.loggedinUser, score: action.score}
+            return { ...state, loggedinUser: user }
+
         default:
             return state
     }

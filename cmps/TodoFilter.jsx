@@ -70,7 +70,7 @@ export function TodoFilter({ filterBy, onSetFilter }) {
                     <option value='true'>Completed</option>
                 </select>
 
-                <button>Submit</button>
+                <button>Filter</button>
             </form>
         </section>
     )

@@ -17,13 +17,16 @@ export function TodoIndex() {
 
 
     useEffect(() => {
+        loadTodos()
+    }, [filterBy])
+
+    function loadTodos() {
         todoService.query(filterBy)
             .then(todos => {
                 dispatch({ type: SET_TODOS, todos })
             })
-    }, [filterBy])
-
-    console.log('filterBy',filterBy)
+            .catch(err => console.log('err:', err))
+    }
 
     function onRemoveTodo(todoId) {
         todoService.remove(todoId)

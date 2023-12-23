@@ -33,7 +33,6 @@ function signup({ username, password, fullname }) {
         .then(_setLoggedinUser)
 }
 
-
 function updateScore(diff) {
     const loggedInUserId = getLoggedinUser()._id
     return userService.getById(loggedInUserId)
@@ -62,7 +61,6 @@ function _setLoggedinUser(user) {
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
-
 
 function getEmptyCredentials() {
     return {

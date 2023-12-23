@@ -1,4 +1,9 @@
 .todo-filter {
-    background-color: var(--clr2bg);
+    background-color: var(--clr1);
     padding: 1em;
+}
+
+.todo-filter form {
+    display: grid;
+    gap: 0.5em;
 }
