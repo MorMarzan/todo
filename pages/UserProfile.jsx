@@ -1,13 +1,11 @@
 const { useState, useRef, useEffect } = React
 
-import { userService } from '../services/user.service.js'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { UserEdit } from './UserEdit.jsx'
-const { NavLink, useNavigate } = ReactRouterDOM
-const { useSelector, useDispatch } = ReactRedux
+const { useNavigate } = ReactRouterDOM
+const { useSelector } = ReactRedux
 
 export function UserProfile() {
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const navigate = useNavigate()
 
     useEffect(() => {

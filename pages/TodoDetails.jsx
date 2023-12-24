@@ -1,6 +1,6 @@
-import { todoService } from "../services/todo.service.js"
-const { useParams, useNavigate, Link } = ReactRouterDOM
+import { loadTodo } from '../store/actions/todo.actions.js'
 
+const { useParams, Link } = ReactRouterDOM
 const { useState, useEffect } = React
 
 export function TodoDetails() {
@@ -9,14 +9,10 @@ export function TodoDetails() {
     const { todoId } = useParams()
 
     useEffect(() => {
-        loadTodo()
-    }, [todoId])
-
-    function loadTodo() {
-        todoService.getById(todoId)
+        loadTodo(todoId)
             .then(setTodo)
             .catch(err => console.log('err:', err))
-    }
+    }, [todoId])
 
     if (!todo) return <div>Loading...</div>
     return (

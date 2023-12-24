@@ -1,29 +1,33 @@
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { userService } from '../services/user.service.js'
 import { LoginForm } from './LoginForm.jsx'
+import { login, signup } from '../store/actions/user.actions.js'
 
 const { useState } = React
 
-export function LoginSignup({ onSetUser }) {
+export function LoginSignup() {
 
     const [isSignup, setIsSignUp] = useState(false)
 
     function onLogin(credentials) {
-        isSignup ? signup(credentials) : login(credentials)
+        isSignup ? _signup(credentials) : _login(credentials)
     }
 
-    function login(credentials) {
-        userService.login(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Logged in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
+    function _login(credentials) {
+        login(credentials)
+            .then((user) => { showSuccessMsg('Logged in successfully') })
+            .catch((err) => {
+                console.log('err', err)
+                showErrorMsg('Oops try again')
+            })
     }
 
-    function signup(credentials) {
-        userService.signup(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Signed in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
+    function _signup(credentials) {
+        signup(credentials)
+            .then((user) => { showSuccessMsg('Signed in successfully') })
+            .catch((err) => { 
+                console.log('err', err)
+                showErrorMsg('Oops try again') 
+            })
     }
 
     return (

@@ -1,10 +1,12 @@
 import { LoginSignup } from './LoginSignup.jsx'
-import { userService } from '../services/user.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
-import { SET_USER } from '../store/store.js'
 import { ProgressBar } from './ProgressBar.jsx'
 
-const { useSelector, useDispatch } = ReactRedux
+import { logout } from '../store/actions/user.actions.js'
+
+
+
+const { useSelector } = ReactRedux
 const { NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
 const { Fragment } = React
@@ -12,31 +14,25 @@ const { Fragment } = React
 
 export function AppHeader() {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const user = useSelector(storeState => storeState.loggedinUser)
-    // const userPrefrence = useSelector(storeState => storeState.loggedinUser.prefs)
-    const todosTotalCount = useSelector(storeState => storeState.todos.length)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
+    // const userPrefrence = useSelector(storeState => storeState.userModule.loggedinUser.prefs)
+    const todosTotalCount = useSelector(storeState => storeState.todoModule.todos.length)
     const todosDoneCount = useSelector(storeState =>
-        storeState.todos.filter(todo =>
+        storeState.todoModule.todos.filter(todo =>
             todo.isDone).length)
 
     function onLogout() {
-        userService.logout()
+        logout()
             .then(() => {
-                onSetUser(null)
+                navigate('/')
                 // setUserColors()
             })
             .catch((err) => {
+                console.log('err', err)
                 showErrorMsg('OOPS try again')
             })
-    }
-
-    function onSetUser(user) {
-        dispatch({ type: SET_USER, user })
-        // setUserColors(user)
-        navigate('/')
     }
 
     // function setUserColors(user) {
@@ -71,7 +67,7 @@ export function AppHeader() {
                         <button onClick={onLogout}>Logout</button>
                     </Fragment>
                 ) : (
-                    <LoginSignup onSetUser={onSetUser} />
+                    <LoginSignup />
                 )}
             </section>
             {todosTotalCount > 0 &&

@@ -1,38 +1,30 @@
 const { useState, useEffect, Fragment } = React
-const { useSelector, useDispatch } = ReactRedux
+const { useSelector } = ReactRedux
 const { Link } = ReactRouterDOM
 
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { REMOVE_TODO, SET_TODOS, UPDATE_TODO } from '../store/store.js'
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
 
-export function TodoIndex() {
-    const dispatch = useDispatch()
+import { loadTodos, removeTodo } from '../store/actions/todo.actions.js'
 
-    const todos = useSelector(storeState => storeState.todos)
-    const user = useSelector(storeState => storeState.loggedinUser)
+export function TodoIndex() {
+
+    const todos = useSelector(storeState => storeState.todoModule.todos)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const [filterBy, setFilterBy] = useState(todoService.getDefaultFilter())
 
 
     useEffect(() => {
-        loadTodos()
+        loadTodos(filterBy)
+            .catch(() => {showErrorMsg('Cannot show todos')})
     }, [filterBy])
 
-    function loadTodos() {
-        todoService.query(filterBy)
-            .then(todos => {
-                dispatch({ type: SET_TODOS, todos })
-            })
-            .catch(err => console.log('err:', err))
-    }
-
     function onRemoveTodo(todoId) {
-        todoService.remove(todoId)
+        removeTodo(todoId)
             .then(() => {
                 showSuccessMsg('Todo removed')
-                dispatch({ type: REMOVE_TODO, todoId })
             })
             .catch(err => {
                 console.log('Cannot remove todo', err)

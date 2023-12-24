@@ -1,12 +1,9 @@
 import { userService } from "../services/user.service.js"
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { UPDATE_USER_PREFERENCE } from '../store/store.js'
+import { UPDATE_USER_PREFERENCE } from '../store/reducers/user.reducer.js'
 
-
-const { Link } = ReactRouterDOM
 const { useDispatch } = ReactRedux
 const { useState } = React
-
 
 export function UserEdit({ user }) {
 
