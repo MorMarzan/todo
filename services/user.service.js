@@ -66,7 +66,9 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname, score: 10000 }
+    const user = { username, password, fullname }
+    user.score = 10000
+    user.pref = { color: '#FFFFFF', bg: '#000000' }
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }

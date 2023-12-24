@@ -85,7 +85,6 @@ export function UserEdit({ user }) {
 
                 <button>Save</button>
             </form>
-            {/* <button><Link className="btn" to={'/profile'}>← Go back</Link></button> */}
 
         </section>
     )

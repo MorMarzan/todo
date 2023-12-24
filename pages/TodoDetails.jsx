@@ -20,7 +20,7 @@ export function TodoDetails() {
             <h2>Todo Details</h2>
             <h3>Task: {todo.txt}</h3>
             <h3>Todo done? {todo.isDone ? 'yes' : 'no'}</h3>
-            <button><Link className="btn" to={'/todo'}>← Go back</Link></button>
+            <Link className="btn" to={'/todo'}>← Go back</Link>
         </section>
     )
 }

@@ -19,8 +19,8 @@ export function TodoList({ todos, onRemoveTodo }) {
                     <TodoPreview todo={todo} />
                     <section className="tools">
                         <button onClick={() => onRemoveTodo(todo._id)}>X</button>
-                        <button><Link to={`/todo/${todo._id}`}>Details</Link></button>
-                        <button><Link to={`/todo/edit/${todo._id}`}>Edit</Link></button>
+                        <Link className="btn" to={`/todo/${todo._id}`}>Details</Link>
+                        <Link className="btn" to={`/todo/edit/${todo._id}`}>Edit</Link>
                     </section>
                 </li>
             )}
