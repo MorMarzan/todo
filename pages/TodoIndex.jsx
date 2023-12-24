@@ -1,24 +1,21 @@
-const { useState, useEffect, Fragment } = React
+const { useEffect, Fragment } = React
 const { useSelector } = ReactRedux
 const { Link } = ReactRouterDOM
 
 import { TodoList } from '../cmps/TodoList.jsx'
-import { todoService } from '../services/todo.service.js'
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
-
-import { loadTodos, removeTodo } from '../store/actions/todo.actions.js'
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { loadTodos, removeTodo, setFilterBy } from '../store/actions/todo.actions.js'
 
 export function TodoIndex() {
 
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
-    const [filterBy, setFilterBy] = useState(todoService.getDefaultFilter())
-
+    const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
 
     useEffect(() => {
-        loadTodos(filterBy)
-            .catch(() => {showErrorMsg('Cannot show todos')})
+        loadTodos()
+            .catch(() => { showErrorMsg('Cannot show todos') })
     }, [filterBy])
 
     function onRemoveTodo(todoId) {
@@ -33,11 +30,7 @@ export function TodoIndex() {
     }
 
     function onSetFilter(filterBy) {
-        setFilterBy(prevFilter => ({
-            ...prevFilter,
-            ...filterBy,
-            // pageIdx: isUndefined(prevFilter.pageIdx) ? undefined : 0
-        }))
+        setFilterBy(filterBy)
     }
 
     function promptSignup() {
@@ -66,18 +59,20 @@ export function TodoIndex() {
 
     return (
         <main>
-            {user ?
-                <section className="todo-index">
-                    <button className='edit btn'><Link to={`/todo/edit/`}>Add todo</Link></button>
-                    <TodoFilter filterBy={{ txt, isDone }} onSetFilter={onSetFilter} />
-                    <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
-                </section>
-                :
-                <Fragment>
-                    <button onClick={promptSignup}>Add todo</button>
-                    <h1>Start creating you're todos now!</h1>
-                </Fragment>
-            }
+            <section className="todo-index">
+                {user ?
+                    <Fragment>
+                        <button className='edit btn'><Link to={`/todo/edit/`}>Add todo</Link></button>
+                        <TodoFilter filterBy={{ txt, isDone }} onSetFilter={onSetFilter} />
+                        <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
+                    </Fragment>
+                    :
+                    <Fragment>
+                        <button onClick={promptSignup}>Add todo</button>
+                        <h1>Start creating you're todos now!</h1>
+                    </Fragment>
+                }
+            </section>
         </main>
     )
 
