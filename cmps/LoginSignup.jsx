@@ -4,7 +4,7 @@ import { login, signup } from '../store/actions/user.actions.js'
 
 const { useState } = React
 
-export function LoginSignup() {
+export function LoginSignup({ setUserColors }) {
 
     const [isSignup, setIsSignUp] = useState(false)
 
@@ -14,7 +14,10 @@ export function LoginSignup() {
 
     function _login(credentials) {
         login(credentials)
-            .then((user) => { showSuccessMsg('Logged in successfully') })
+            .then((user) => {
+                setUserColors(user)
+                showSuccessMsg('Logged in successfully')
+            })
             .catch((err) => {
                 console.log('err', err)
                 showErrorMsg('Oops try again')
@@ -23,10 +26,12 @@ export function LoginSignup() {
 
     function _signup(credentials) {
         signup(credentials)
-            .then((user) => { showSuccessMsg('Signed in successfully') })
-            .catch((err) => { 
+            .then((user) => {
+                showSuccessMsg('Signed in successfully')
+            })
+            .catch((err) => {
                 console.log('err', err)
-                showErrorMsg('Oops try again') 
+                showErrorMsg('Oops try again')
             })
     }
 

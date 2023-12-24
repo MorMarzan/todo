@@ -17,7 +17,7 @@ export function AppHeader() {
     const navigate = useNavigate()
 
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
-    // const userPrefrence = useSelector(storeState => storeState.userModule.loggedinUser.prefs)
+    // const userPrefrence = useSelector(storeState => storeState.userModule.loggedinUser.pref)
     const todosTotalCount = useSelector(storeState => storeState.todoModule.todos.length)
     const todosDoneCount = useSelector(storeState =>
         storeState.todoModule.todos.filter(todo =>
@@ -26,6 +26,7 @@ export function AppHeader() {
     function onLogout() {
         logout()
             .then(() => {
+                setUserColors(null)
                 navigate('/')
                 // setUserColors()
             })
@@ -35,19 +36,18 @@ export function AppHeader() {
             })
     }
 
-    // function setUserColors(user) {
-    //     const root = document.documentElement
-    //     // Set or update the CSS variables based on the user's color and bg props
-    //     if (user && user.color && user.bg) {
-    //         root.style.setProperty('--clr1bg', user.color)
-    //         root.style.setProperty('--clr1', user.bg)
-    //     } else {
-    //         // If user is not logged in or doesn't have color/bg, reset the variables to default
-    //         root.style.setProperty('--clr1bg', '')
-    //         root.style.setProperty('--clr1', '')
-    //     }
-    // }
-
+    function setUserColors(user) {
+        const root = document.documentElement
+        // Set or update the CSS variables based on the user's color and bg props
+        if (user && user.pref.color && user.pref.bg) {
+            root.style.setProperty('--clr1bg', user.pref.color)
+            root.style.setProperty('--clr1', user.pref.bg)
+        } else {
+            // If user is not logged in or doesn't have color/bg, reset the variables to default
+            root.style.setProperty('--clr1bg', '')
+            root.style.setProperty('--clr1', '')
+        }
+    }
 
     return (
         <header className="app-header">
@@ -67,7 +67,7 @@ export function AppHeader() {
                         <button onClick={onLogout}>Logout</button>
                     </Fragment>
                 ) : (
-                    <LoginSignup />
+                    <LoginSignup setUserColors={setUserColors}/>
                 )}
             </section>
             {todosTotalCount > 0 &&

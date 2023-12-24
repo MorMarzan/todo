@@ -10,7 +10,7 @@ const gDemoUsers = [
         password: 'pass',
         fullname: 'Muki Ja',
         score: 10000,
-        prefs: {
+        pref: {
             color: '#FFFFFF',
             bg: '#000000'
         }
@@ -21,7 +21,7 @@ const gDemoUsers = [
         password: 'pass',
         fullname: 'Mor Mar',
         score: 10000,
-        prefs: {
+        pref: {
             color: '#FFFFFF',
             bg: '#000000'
         }
@@ -32,7 +32,7 @@ const gDemoUsers = [
         password: 'pass',
         fullname: 'Hadar Mar',
         score: 10000,
-        prefs: {
+        pref: {
             color: '#FFFFFF',
             bg: '#000000'
         }
@@ -47,11 +47,10 @@ export const userService = {
     getLoggedinUser,
     updateScore,
     getEmptyCredentials,
-    updateUserPreference
+    updateUserPref
 }
 
 _createUsers()
-
 
 function getById(userId) {
     return storageService.get(STORAGE_KEY, userId)
@@ -86,19 +85,20 @@ function updateScore(diff) {
         })
 }
 
-function updateUserPreference(preference) {
-    const { fullname, prefs } = preference
+function updateUserPref(updatedUser) {
+    const { fullname, pref } = updatedUser
     const loggedInUserId = getLoggedinUser()._id
-    return userService.getById(loggedInUserId)
+    return getById(loggedInUserId)
         .then(user => {
             user.fullname = fullname
-            user.prefs.color = prefs.color
-            user.prefs.bg = prefs.bg
+            user.pref.color = pref.color
+            user.pref.bg = pref.bg
             return storageService.put(STORAGE_KEY, user)
         })
-        .then(user => {
-            _setLoggedinUser(user)
-            return ({ fullname: user.fullname, color: user.color, bg: user.bg })
+        .then(savedUser => {
+            _setLoggedinUser(savedUser)
+            // return savedUser
+            return { fullname: savedUser.fullname, pref: savedUser.pref }
         })
         .catch(console.log)
 }
@@ -112,10 +112,9 @@ function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
 }
 
-// window.getLoggedinUser = getLoggedinUser
-
+//here we choose what to put in the session storage and what not
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score, prefs: {color: user.prefs.color, bg: user.prefs.bg} }
+    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score, pref: { color: user.pref.color, bg: user.pref.bg } }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }

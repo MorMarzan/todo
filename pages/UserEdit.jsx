@@ -1,13 +1,10 @@
-import { userService } from "../services/user.service.js"
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { UPDATE_USER_PREFERENCE } from '../store/reducers/user.reducer.js'
+import { updateUserPref } from '../store/actions/user.actions.js'
 
-const { useDispatch } = ReactRedux
 const { useState } = React
 
 export function UserEdit({ user }) {
 
-    const dispatch = useDispatch()
     const [userToEdit, setUserToEdit] = useState(user)
 
     function handleChange({ target }) {
@@ -38,8 +35,8 @@ export function UserEdit({ user }) {
         setUserToEdit(prevUser =>
         ({
             ...prevUser,
-            prefs: {
-                ...prevUser.prefs,
+            pref: {
+                ...prevUser.pref,
                 [field]: value
             }
         }))
@@ -47,10 +44,9 @@ export function UserEdit({ user }) {
 
     function onSaveUser(ev) {
         ev.preventDefault()
-        userService.updateUserPreference(userToEdit)
-            .then((savedPreference) => {
-                console.log('savedPreference',savedPreference)
-                dispatch({ type: UPDATE_USER_PREFERENCE, preference: savedPreference })
+        updateUserPref(userToEdit)
+            .then((savedUserPref) => {
+                setUserColors(savedUserPref)
                 showSuccessMsg(`Profile updated successfully`)
             })
             .catch(err => {
@@ -59,7 +55,20 @@ export function UserEdit({ user }) {
             })
     }
 
-    const { fullname, prefs } = userToEdit
+    function setUserColors(user) {
+        const root = document.documentElement
+        // Set or update the CSS variables based on the user's color and bg props
+        if (user && user.pref.color && user.pref.bg) {
+            root.style.setProperty('--clr1bg', user.pref.color)
+            root.style.setProperty('--clr1', user.pref.bg)
+        } else {
+            // If user is not logged in or doesn't have color/bg, reset the variables to default
+            root.style.setProperty('--clr1bg', '')
+            root.style.setProperty('--clr1', '')
+        }
+    }
+
+    const { fullname, pref } = userToEdit
 
     return (
         <section className="user-edit">
@@ -69,10 +78,10 @@ export function UserEdit({ user }) {
                 <input onChange={handleChange} value={fullname} type="text" name="fullname" id="fullname" />
 
                 <label htmlFor="color">Color</label>
-                <input onChange={handleColorChange} value={prefs.color} type="color" name="color" id="color" />
+                <input onChange={handleColorChange} value={pref.color} type="color" name="color" id="color" />
 
                 <label htmlFor="bg">BG Color</label>
-                <input onChange={handleColorChange} value={prefs.bg} type="color" name="bg" id="bg" />
+                <input onChange={handleColorChange} value={pref.bg} type="color" name="bg" id="bg" />
 
                 <button>Save</button>
             </form>

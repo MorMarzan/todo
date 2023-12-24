@@ -1,5 +1,5 @@
 import { userService } from "../../services/user.service.js"
-import { SET_USER } from "../reducers/user.reducer.js"
+import { SET_USER, UPDATE_USER_PREF } from "../reducers/user.reducer.js"
 import { store } from "../store.js"
 
 export function signup(credentials) {
@@ -36,4 +36,17 @@ export function logout() {
             console.log('user actions -> Cannot logout', err)
             throw err
         })
+}
+
+export function updateUserPref(updatedUser) {
+    return userService.updateUserPref(updatedUser)
+        .then(savedUserPref => {
+            store.dispatch({ type: UPDATE_USER_PREF, userPref: savedUserPref })
+            return savedUserPref
+        })
+        .catch((err) => {
+            console.log('user actions -> Cannot signup', err)
+            throw err
+        })
+
 }

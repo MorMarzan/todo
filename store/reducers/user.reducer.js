@@ -1,7 +1,7 @@
 import { userService } from "../../services/user.service.js"
 
 export const SET_USER = 'SET_USER'
-export const UPDATE_USER_PREFERENCE = 'UPDATE_USER_PREFERENCE'
+export const UPDATE_USER_PREF = 'UPDATE_USER_PREF'
 export const SET_USER_SCORE = 'SET_USER_SCORE'
 
 const initialState = {
@@ -14,9 +14,11 @@ export function userReducer(state = initialState, action = {}) {
 
         case SET_USER:
             return { ...state, loggedinUser: action.user }
-        case UPDATE_USER_PREFERENCE:
-            user = { ...state.loggedinUser, ...action.preference }
+
+        case UPDATE_USER_PREF:
+            user = { ...state.loggedinUser, ...action.userPref }
             return { ...state, loggedinUser: user }
+            
         default:
             return state
     }
