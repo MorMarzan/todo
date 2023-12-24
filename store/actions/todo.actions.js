@@ -1,10 +1,10 @@
 import { todoService } from "../../services/todo.service.js"
-import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO, SET_FILTER_BY } from "../reducers/todo.reducer.js"
+import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO, SET_FILTER_BY, SET_IS_LOADING } from "../reducers/todo.reducer.js"
 import { store } from "../store.js"
 
 
 export function loadTodos() {
-    // store.dispatch({ type: SET_IS_LOADING, isLoading: true })
+    store.dispatch({ type: SET_IS_LOADING, isLoading: true })
     const filterBy = store.getState().todoModule.filterBy
     return todoService.query(filterBy)
         .then(todos => {
@@ -15,7 +15,7 @@ export function loadTodos() {
             throw err
         })
         .finally(() => {
-            // store.dispatch({ type: SET_IS_LOADING, isLoading: false })
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false })
         })
 }
 
@@ -27,7 +27,7 @@ export function loadTodo(todoId) {
             throw err
         })
         .finally(() => {
-            // store.dispatch({ type: SET_IS_LOADING, isLoading: false })
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false })
         })
 }
 
@@ -47,7 +47,7 @@ export function loadTodo(todoId) {
 // }
 
 export function removeTodo(todoId) {
-    // store.dispatch({ type: SET_IS_LOADING, isLoading: true })
+    store.dispatch({ type: SET_IS_LOADING, isLoading: true })
     return todoService.remove(todoId)
         .then(() => {
             store.dispatch({ type: REMOVE_TODO, todoId })
@@ -57,7 +57,7 @@ export function removeTodo(todoId) {
             throw err
         })
         .finally(() => {
-            // store.dispatch({ type: SET_IS_LOADING, isLoading: false })
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false })
         })
 }
 

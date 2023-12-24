@@ -6,6 +6,8 @@ export const ADD_TODO = 'ADD_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 
+export const SET_IS_LOADING = 'SET_IS_LOADING'
+
 const initialState = {
     todos: [],
     isLoading: false,
@@ -34,6 +36,9 @@ export function todoReducer(state = initialState, action = {}) {
 
         case SET_FILTER_BY:
             return { ...state, filterBy: { ...state.filterBy, ...action.filterBy } }
+
+        case SET_IS_LOADING:
+            return { ...state, isLoading: action.isLoading }
 
         default:
             return state

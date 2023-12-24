@@ -7,11 +7,13 @@ import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { loadTodos, removeTodo, setFilterBy } from '../store/actions/todo.actions.js'
 import { utilService } from '../services/util.service.js'
+import { Loader } from '../cmps/Loader.jsx'
 
 export function TodoIndex() {
 
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
+    const isLoading = useSelector(storeState => storeState.todoModule.isLoading)
     const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
     const debounceOnSetFilter = useRef(utilService.debounce(onSetFilter, 500))
 
@@ -32,7 +34,6 @@ export function TodoIndex() {
     }
 
     function onSetFilter(filterBy) {
-        console.log('hiii')
         setFilterBy(filterBy)
     }
 
@@ -59,22 +60,30 @@ export function TodoIndex() {
     // }
 
     const { txt, isDone } = filterBy
+    console.log('isLoading', isLoading)
 
     return (
         <main>
             <section className="todo-index">
-                {user ?
+
+                {user && 
+                // !isLoading &&
                     <Fragment>
                         <button className='edit btn'><Link to={`/todo/edit/`}>Add todo</Link></button>
                         <TodoFilter filterBy={{ txt, isDone }} onSetFilter={debounceOnSetFilter.current} />
                         <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
                     </Fragment>
-                    :
+                }
+
+                {/* {user && isLoading && <Loader />} */}
+
+                {!user &&
                     <Fragment>
                         <button onClick={promptSignup}>Add todo</button>
                         <h1>Start creating you're todos now!</h1>
                     </Fragment>
                 }
+
             </section>
         </main>
     )
