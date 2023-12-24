@@ -1,4 +1,4 @@
-const { useEffect, Fragment } = React
+const { useEffect, useRef, Fragment } = React
 const { useSelector } = ReactRedux
 const { Link } = ReactRouterDOM
 
@@ -6,12 +6,14 @@ import { TodoList } from '../cmps/TodoList.jsx'
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { loadTodos, removeTodo, setFilterBy } from '../store/actions/todo.actions.js'
+import { utilService } from '../services/util.service.js'
 
 export function TodoIndex() {
 
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
+    const debounceOnSetFilter = useRef(utilService.debounce(onSetFilter, 500))
 
     useEffect(() => {
         loadTodos()
@@ -30,6 +32,7 @@ export function TodoIndex() {
     }
 
     function onSetFilter(filterBy) {
+        console.log('hiii')
         setFilterBy(filterBy)
     }
 
@@ -63,7 +66,7 @@ export function TodoIndex() {
                 {user ?
                     <Fragment>
                         <button className='edit btn'><Link to={`/todo/edit/`}>Add todo</Link></button>
-                        <TodoFilter filterBy={{ txt, isDone }} onSetFilter={onSetFilter} />
+                        <TodoFilter filterBy={{ txt, isDone }} onSetFilter={debounceOnSetFilter.current} />
                         <TodoList todos={todos} onRemoveTodo={onRemoveTodo} />
                     </Fragment>
                     :
